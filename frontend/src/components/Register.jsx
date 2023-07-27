@@ -2,11 +2,11 @@ import { Button, Card, TextField, Typography } from "@mui/material";
 import React from "react";
 import axios from "axios";
 import { BASE_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 
-
-function Register() {
-    
+function Register({setUserEmail}) {
+    const navigate = useNavigate();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
@@ -26,7 +26,8 @@ function Register() {
             })
             let data = res.data;
             localStorage.setItem('token', data.token);
-            window.location="/";
+            setUserEmail(email);
+            navigate("/courses");
         }} 
         variant={"contained"}>Signup</Button>
         </Card>

@@ -1,26 +1,10 @@
-import axios from "axios";
-import {BASE_URL} from "../config.js"
-import { useEffect, useState } from "react";
+
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-function Appbar(){
+function Appbar({userEmail, setUserEmail}){
     const navigate = useNavigate();
-    const [userEmail, setUserEmail] = useState(null);
-    const Init = async ()=>{
-        const res = await axios.get(`${BASE_URL}/admin/me`,{
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem('token'),
-                "Content-Type": "application/json"
-            }
-        })
-        setUserEmail(res.data.username);
-    }
-
-    useEffect(()=>{
-        Init();
-    },[]);
-
+   
     if (userEmail) {
         return <div style={{
             display: "flex",
@@ -56,7 +40,8 @@ function Appbar(){
                         variant={"contained"}
                         onClick={() => {
                             localStorage.setItem("token", null);
-                            window.location = "/";
+                            setUserEmail(null);
+                        
                         }}
                     >Logout</Button>
                 </div>

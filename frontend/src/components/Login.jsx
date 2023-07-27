@@ -4,9 +4,10 @@ import axios from "axios";
 
 import { BASE_URL } from "../config";
 
+import { useNavigate } from "react-router-dom";
 
-function Login() {
- 
+function Login({setUserEmail}) {
+    const navigate = useNavigate();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
@@ -29,7 +30,8 @@ function Login() {
             })
             let data = res.data
             localStorage.setItem('token', data.token);
-            window.location="/";
+            setUserEmail(email);
+            navigate("/courses");
             
         }} 
         variant={"contained"}>Signin</Button>
