@@ -3,11 +3,21 @@ import { useNavigate } from "react-router-dom";
 import {  Typography } from "@mui/material";
 import Grid  from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import {  useRecoilValue } from "recoil";
+
+import { userEmailState } from "../store/selectors/userEmail";
+import { isUserLoadingState } from "../store/selectors/isUserLoading";
+import { Loading } from "./Loading";
 
 
-function Landing({userEmail}) {
+function Landing() {
+    const userEmail = useRecoilValue(userEmailState);
+    const isUserLoading = useRecoilValue(isUserLoadingState);
     const navigate = useNavigate(); 
-        return(
+    if(isUserLoading){
+        return <Loading />
+    }
+    return(
             <div>
             <Grid container style={{padding: "5vw"}}>
             <Grid item xs={12} md={6} lg={6}>

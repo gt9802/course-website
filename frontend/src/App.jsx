@@ -6,26 +6,15 @@ import Register from './components/Register';
 import ShowCourses from './components/ShowCourses';
 import Course from './components/Course';
 import Appbar from './components/Appbar';
-import { useState, useEffect } from 'react';
+import {  useEffect } from 'react';
 import axios from 'axios';
 import { BASE_URL } from './config';
-
+import { userState } from './store/atoms/user';
+import {
+    RecoilRoot,
+    useSetRecoilState,
+  } from 'recoil';
 function App() {
-    const [userEmail, setUserEmail] = useState(null);
-    const Init = async ()=>{
-        const res = await axios.get(`${BASE_URL}/admin/me`,{
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem('token'),
-                "Content-Type": "application/json"
-            }
-        })
-        setUserEmail(res.data.username);
-    }
-
-    useEffect(()=>{
-        Init();
-    },[]);
-
     return (
         <div style={{
             width: "100vw",
@@ -33,20 +22,61 @@ function App() {
             backgroundColor: "#eeee"
 
         }}>
+        <RecoilRoot>
         <Router>
-            <Appbar userEmail={userEmail} setUserEmail={setUserEmail} />
+            <Appbar />
+            <InitUser />
             <Routes>
-                <Route path="/" element={<Landing userEmail={userEmail}/>} />
-                <Route path="/login" element={<Login setUserEmail={setUserEmail}/>} />
-                <Route path="/register" element={<Register setUserEmail={setUserEmail} />} />
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register/>} />
                 <Route path="/addCourse" element={<AddCourse />} />
                 <Route path="/courses" element={<ShowCourses />} />
                 <Route path="/course/:courseId" element={<Course />} />
             </Routes>
         </Router>
+        </RecoilRoot>
         </div>
         
     );
 }
+
+function InitUser(){
+    const setUser = useSetRecoilState(userState);
+    const Init = async ()=>{
+        try{
+            const res = await axios.get(`${BASE_URL}/admin/me`,{
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('token'),
+                    "Content-Type": "application/json"
+                }
+            })
+
+            if(res.data.username){
+                setUser({
+                    isLoading: false,
+                    userEmail: res.data.username
+                });
+            }else{
+                setUser({
+                    isLoading: false,
+                    userEmail: null
+                });
+            }
+        }catch(e){
+            setUser({
+                isLoading: false,
+                userEmail: null
+            })
+        }
+    }
+
+    useEffect(()=>{
+        Init();
+    },[]);
+
+    return <></>
+}
+
 
 export default App;

@@ -1,10 +1,21 @@
 
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import {useRecoilValue, useSetRecoilState } from 'recoil';
+import {  isUserLoadingState } from "../store/selectors/isUserLoading";
+import { userEmailState} from "../store/selectors/userEmail";
+import { Loading } from "./Loading";
+import { userState } from "../store/atoms/user";
 
-function Appbar({userEmail, setUserEmail}){
+function Appbar(){
     const navigate = useNavigate();
-   
+    const userLoading = useRecoilValue(isUserLoadingState);
+    const userEmail = useRecoilValue(userEmailState);
+    const setUser = useSetRecoilState(userState);
+
+    if(userLoading){
+        return <Loading />
+    }
     if (userEmail) {
         return <div style={{
             display: "flex",
@@ -40,7 +51,10 @@ function Appbar({userEmail, setUserEmail}){
                         variant={"contained"}
                         onClick={() => {
                             localStorage.setItem("token", null);
-                            setUserEmail(null);
+                            setUser({
+                                isLoading: false,
+                                userEmail:null
+                            });
                         
                         }}
                     >Logout</Button>
