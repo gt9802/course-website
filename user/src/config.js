@@ -1,2 +1,2 @@
 
-export const BASE_URL = "https://course-selling-website-iu7g.onrender.com"
+export const BASE_URL = "https://course-selling-website-x98l.onrender.com"
