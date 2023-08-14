@@ -1,10 +1,6 @@
-## Create a course selling website
+##course selling website
 
-### Description
-Functionally the same as 03-course-app-medium. Routes are the same as well.
-But now you need to store data in files vs in memory.
-Rather than storing data in files, store them in MongoDB. 
-We will be covering this in the extra class next week but would be good for you to run ahead.
+
 
 ## Routes
 ### Admin Routes:
@@ -28,6 +24,7 @@ We will be covering this in the extra class next week but would be good for you 
    Description: Returns all the courses.
    Input: Headers: { 'Authorization': 'Bearer jwt_token_here' }
    Output: { courses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+   
    User Routes:
 
 ### User routes
@@ -35,18 +32,22 @@ We will be covering this in the extra class next week but would be good for you 
    Description: Creates a new user account.
    Input: { username: 'user', password: 'pass' }
    Output: { message: 'User created successfully', token: 'jwt_token_here' }
+   
  - POST /users/login
    Description: Authenticates a user. It requires the user to send username and password in the headers.
    Input: Headers: { 'username': 'user', 'password': 'pass' }
    Output: { message: 'Logged in successfully', token: 'jwt_token_here' }
+   
  - GET /users/courses
    Description: Lists all the courses.
    Input: Headers: { 'Authorization': 'Bearer jwt_token_here' }
    Output: { courses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+   
  - POST /users/courses/:courseId
    Description: Purchases a course. courseId in the URL path should be replaced with the ID of the course to be purchased.
    Input: Headers: { 'Authorization': 'Bearer jwt_token_here' }
    Output: { message: 'Course purchased successfully' }
+   
  - GET /users/purchasedCourses
    Description: Lists all the courses purchased by the user.
    Input: Headers: { 'Authorization': 'Bearer jwt_token_here' }
